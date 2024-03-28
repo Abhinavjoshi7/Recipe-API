@@ -13,7 +13,27 @@ services:
     volumes:
       # way of mapping local directory to container 
       - ./app:/app
+    # For some reason it works on http://127.0.0.1:8000/ 
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
-    #For some reason it works on http://127.0.0.1:8000/
+      
+    environment:
+      - DB_HOST=db
+      - DB_NAME=dev_db
+      - DB_PASS=changeme
+    #The app service will start after the db service by using depends on
+    depends_on:
+      - db
+
+  db: 
+    image: postgres:13-alpine
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=dev_db
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+
+volumes:
+  dev-db-data:
   
