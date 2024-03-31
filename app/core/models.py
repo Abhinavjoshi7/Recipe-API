@@ -30,14 +30,21 @@ class UserManager(BaseUserManager):
 
         return user
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
-    email = models.EmailField(max_length = 255, unique=True)
+    email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = UserManager()
-    #We want to modify the default model to authenticate using email field, instead of Username(default). In order to do it, we must let Django know which field we plan to use as the 'username'
-    USERNAME_FIELD = 'email'
+    """
+    If we want to modify the default model
+    to authenticate using email field
+    instead of Username(default).
 
+    In order to do it, we must let Django know
+    which field we plan to use as the 'username'
+    """
+    USERNAME_FIELD = 'email'
