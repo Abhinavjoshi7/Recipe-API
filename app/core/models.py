@@ -13,7 +13,9 @@ class UserManager(BaseUserManager):
     """Manager for users."""
 
     def create_user(self, email, password=None, **extra_fields):
-        user = self.model(email=email, **extra_fields)
+        if not email:
+            raise ValueError('User must have an email address')
+        user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self.db)
 
@@ -29,3 +31,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     #We want to modify the default model to authenticate using email field, instead of Username(default). In order to do it, we must let Django know which field we plan to use as the 'username'
     USERNAME_FIELD = 'email'
+
