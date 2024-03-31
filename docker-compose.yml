@@ -1,3 +1,6 @@
+#About this file 
+#The docker-compose.yml file is used to define the services, networks, and volumes that make up your application's environment. It allows you to specify configurations for multiple containers, their relationships, and how they communicate with each other.
+
 #version of the docker-compose file
 version: '3.9'
 

@@ -1,3 +1,6 @@
+# About this file 
+# Dockerfile is used to define a blueprint for building Docker images. It contains a series of instructions that Docker follows to assemble the image. These instructions include commands to copy files into the image, install software, set environment variables, and define the entry point for the container, among others.
+
 FROM python:3.9-alpine3.13
 LABEL maintainer="Abhinav Joshi"
 
