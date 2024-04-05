@@ -14,6 +14,7 @@ that is used to dynamically build URLs by their {view} name.
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 
+
 def create_user(**params):
     """Create and return a new user."""
     return get_user_model().objects.create_user(**params)
@@ -73,8 +74,8 @@ class PublicUserAPITests(TestCase):
         }
         create_user(**user_details)
         payload = {
-            'email' : user_details['email'],
-            'password' : user_details['password']
+            'email': user_details['email'],
+            'password': user_details['password']
         }
         res = self.client.post(TOKEN_URL, payload)
         self.assertIn('token', res.data)
@@ -82,7 +83,7 @@ class PublicUserAPITests(TestCase):
 
     def test_create_token_bad_credentials(self):
         """Test returns error if credentials invalid"""
-        create_user(email = 'test@example.com', password = 'goodpass')
+        create_user(email='test@example.com', password='goodpass')
         payload = {'email': 'test@example.com', 'password': 'badpass'}
         res = self.client.post(TOKEN_URL, payload)
 
