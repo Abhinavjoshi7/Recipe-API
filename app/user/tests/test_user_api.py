@@ -13,12 +13,15 @@ that is used to dynamically build URLs by their {view} name.
 """
 CREATE_USER_URL = reverse('user:create')
 
+
 def create_user(**params):
     """Create and return a new user."""
     return get_user_model().objects.create_user(**params)
 
+
 class PublicUserAPITests(TestCase):
     """Test the public features of the user API."""
+
     def setUp(self):
         self.client = APIClient()
 
