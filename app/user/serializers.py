@@ -25,6 +25,16 @@ class UserSerializer(serializers.ModelSerializer):
         """Create and return user with encrypted password"""
         return get_user_model().objects.create_user(**validated_data)
 
+    def update(self, instance, validated_data):
+        """Update and return user."""
+        password = validated_data.pop('password', None)
+        user = super().update(instance, validated_data)
+
+        if password:
+            user.set_password(password)
+            user.save()
+
+        return user
 
 class AuthTokenSerializer(serializers.Serializer):
     """Serializerf for the user auth token"""
@@ -34,8 +44,15 @@ class AuthTokenSerializer(serializers.Serializer):
         trim_whitespace=False,
     )
 
+    """
+    Validate method is called automatically
+    by the Django REST Framework
+    during the validation phase
+    of serializer processing.
+    """
+
     def validate(self, attrs):
-        """Validate and authenticate the user"""
+        """Validate and authenticate the user."""
         email = attrs.get('email')
         password = attrs.get('password')
         user = authenticate(
@@ -44,8 +61,8 @@ class AuthTokenSerializer(serializers.Serializer):
             password=password,
         )
         if not user:
-            msg = _('Unable to authenticate with provided crendentials.')
-            raise serializers.ValidationError(msg, code='auhorization')
+            msg = _('Unable to authenticate with provided credentials.')
+            raise serializers.ValidationError(msg, code='authorization')
 
         attrs['user'] = user
         return attrs
