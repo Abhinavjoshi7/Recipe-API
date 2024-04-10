@@ -1,5 +1,6 @@
 """
 Views for the user API
+It will be shown on the webpage
 """
 from rest_framework import generics, authentication, permissions
 from rest_framework.authtoken.views import ObtainAuthToken

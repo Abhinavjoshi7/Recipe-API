@@ -36,20 +36,14 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
+
 class AuthTokenSerializer(serializers.Serializer):
-    """Serializerf for the user auth token"""
+    """Serializer for the user auth token."""
     email = serializers.EmailField()
     password = serializers.CharField(
         style={'input_type': 'password'},
         trim_whitespace=False,
     )
-
-    """
-    Validate method is called automatically
-    by the Django REST Framework
-    during the validation phase
-    of serializer processing.
-    """
 
     def validate(self, attrs):
         """Validate and authenticate the user."""

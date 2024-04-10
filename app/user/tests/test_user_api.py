@@ -1,4 +1,4 @@
-""""
+"""
 Tests for the user API.
 """
 from django.test import TestCase
@@ -7,13 +7,12 @@ from django.urls import reverse
 
 from rest_framework.test import APIClient
 from rest_framework import status
-"""
-reverse() is a utility function provided by django.urls module
-that is used to dynamically build URLs by their {view} name.
-"""
+
+
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
+
 
 def create_user(**params):
     """Create and return a new user."""
