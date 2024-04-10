@@ -1,6 +1,13 @@
 """
 Views for the user API
 It will be shown on the webpage
+
+View is what handles the request
+made to a url
+
+Django uses functions and classes
+for handling requests
+
 """
 from rest_framework import generics, authentication, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
