@@ -1,5 +1,5 @@
 """
-URL mapping for the recipie app.
+URL mapping for the recipe app.
 """
 from django.urls import(
     path,
@@ -8,12 +8,12 @@ from django.urls import(
 
 from rest_framework.routers import DefaultRouter
 
-from recipie import views
+from recipe import views
 
 router = DefaultRouter()
-router.register('recipies', views.RecipieViewSet)
+router.register('recipes', views.RecipeViewSet)
 
-app_name = 'recipie'
+app_name = 'recipe'
 
 urlpatterns = [
     path('', include(router.urls)),

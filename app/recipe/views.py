@@ -1,23 +1,23 @@
 """
-Views for the recipie APIs
+Views for the recipe APIs
 """
 
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Recipie
-from recipie import serializers
+from core.models import Recipe
+from recipe import serializers
 
 
-class RecipieViewSet(viewsets.ModelViewSet):
-    """View for manage recipie APIs"""
+class RecipeViewSet(viewsets.ModelViewSet):
+    """View for manage recipe APIs"""
 
-    serializers_class = serializers.RecipieSerializer
-    queryset = Recipie.objects.all()
+    serializers_class = serializers.RecipeSerializer
+    queryset = Recipe.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        """Retrieve recipies for authenticated user."""
+        """Retrieve recipes for authenticated user."""
         return self.queryset.filter(user=self.request.user).order_by('-id')

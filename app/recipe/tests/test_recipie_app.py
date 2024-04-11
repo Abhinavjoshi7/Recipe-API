@@ -1,5 +1,5 @@
 """
-Tests for recipie APIs
+Tests for recipe APIs
 """
 from decimal import Decimal
 
@@ -10,43 +10,43 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Recipie
+from core.models import Recipe
 
-from recipie.serializers import RecipieSerializer
+from recipe.serializers import RecipeSerializer
 
-RECIPIES_URL = reverse('recipie:recipie-list')
+recipeS_URL = reverse('recipe:recipe-list')
 
-def create_recipie(user, **params):
+def create_recipe(user, **params):
     """
-    Create and return a sample recipie.
+    Create and return a sample recipe.
     """
     defaults ={
-        'title':'Sample Recipie',
+        'title':'Sample recipe',
         'time_minutes':22,
         'price':Decimal('5.25'),
         'description':'Sample description',
-        'link':'http://example.com/recipie.pdf'
+        'link':'http://example.com/recipe.pdf'
 
     }
     defaults.update(params)
 
-    recipie = Recipie.objects.create(user=user, **defaults)
-    return recipie
+    recipe = Recipe.objects.create(user=user, **defaults)
+    return recipe
 
 
-class PublicRecipieApiTests(TestCase):
+class PublicRecipeApiTests(TestCase):
     """Test unauthenticated API requests"""
     def setUp(self):
         self.client = APIClient()
 
     def test_auth_required(self):
         """Test auth is required to call API"""
-        res = self.client.get(RECIPIES_URL)
+        res = self.client.get(recipeS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipieApiTests(TestCase):
+class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requests"""
     def setUp(self):
         self.client = APIClient()
@@ -56,33 +56,33 @@ class PrivateRecipieApiTests(TestCase):
         )
         self.client.force_authenticate(self.user)
 
-    def test_retrieve_recipies(self):
-        """Test retrieving a list of recipies"""
-        create_recipie(user=self.user)
-        create_recipie(user=self.user)
+    def test_retrieve_recipes(self):
+        """Test retrieving a list of recipes"""
+        create_recipe(user=self.user)
+        create_recipe(user=self.user)
 
-        res = self.client.get(RECIPIES_URL)
+        res = self.client.get(recipeS_URL)
 
-        recipies = Recipie.objects.all().order_by('-id')
-        serializer = RecipieSerializer(recipies, many=True)
+        recipes = Recipe.objects.all().order_by('-id')
+        serializer = RecipeSerializer(recipes, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_recipie_limited_to_user(self):
+    def test_recipe_limited_to_user(self):
         """
-        Test list of recipies is limited to
+        Test list of recipes is limited to
         authenticated user.
         """
         other_user = get_user_model().objects.create_user(
             'other@example.com',
             'testpass123',
         )
-        create_recipie(user=other_user)
-        create_recipie(user=self.user)
+        create_recipe(user=other_user)
+        create_recipe(user=self.user)
 
-        res = self.client.get(RECIPIES_URL)
+        res = self.client.get(recipeS_URL)
 
-        recipies = Recipie.objects.filter(user=self.user)
-        serializer = RecipieSerializer(recipies,many=True)
+        recipes = Recipe.objects.filter(user=self.user)
+        serializer = RecipeSerializer(recipes,many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data,serializer.data)
