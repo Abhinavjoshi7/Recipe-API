@@ -5,13 +5,14 @@ Views for the recipe APIs
 from rest_framework import (
     viewsets,
     mixins,
-)
+    )
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import (Recipe,
-                         Tag,
-)
+from core.models import (
+        Recipe,
+        Tag,
+        )
 from recipe import serializers
 
 
@@ -49,4 +50,3 @@ class TagViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     def get_queryset(self):
         """Filter queryset to authenticated user"""
         return self.queryset.filter(user=self.request.user).order_by('-name')
-
