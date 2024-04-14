@@ -57,3 +57,4 @@ and will not apply our admin page sorting and listing
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Recipe)
+admin.site.register(models.Tag)
