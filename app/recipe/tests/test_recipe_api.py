@@ -339,9 +339,9 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_create_ingredient_on_update(self):
         """Test creating an ingredient when updating a recipe."""
-        recipe = create_recipe(user=self.uesr)
+        recipe = create_recipe(user=self.user)
 
-        payload ={'ingredients': [{'name': 'Limes'}]}
+        payload = {'ingredients': [{'name': 'Limes'}]}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
@@ -356,7 +356,7 @@ class PrivateRecipeApiTests(TestCase):
         recipe.ingredients.add(ingredient1)
 
         ingredient2 = Ingredient.objects.create(user=self.user, name='Chili')
-        payload = {'ingredients': [{'name': 'chili'}]}
+        payload = {'ingredients': [{'name': 'Chili'}]}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
@@ -365,12 +365,12 @@ class PrivateRecipeApiTests(TestCase):
         self.assertNotIn(ingredient1, recipe.ingredients.all())
 
     def test_clear_recipe_ingredients(self):
-        """Test clearing ingredient for a recipe"""
+        """Test clearing a recipes ingredients."""
         ingredient = Ingredient.objects.create(user=self.user, name='Garlic')
         recipe = create_recipe(user=self.user)
         recipe.ingredients.add(ingredient)
 
-        payload ={'ingredient': []}
+        payload = {'ingredients': []}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
