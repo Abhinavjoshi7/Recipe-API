@@ -1,4 +1,4 @@
-# About this file 
+# About this file
 # Dockerfile is used to define a blueprint for building Docker images. It contains a series of instructions that Docker follows to assemble the image. These instructions include commands to copy files into the image, install software, set environment variables, and define the entry point for the container, among others.
 
 FROM python:3.9-alpine3.13
@@ -6,13 +6,13 @@ LABEL maintainer="Abhinav Joshi"
 
 ENV PYTHONUNBUFFERED 1
 
-# Copy the requirements file into the docker image  
+# Copy the requirements file into the docker image
 # Copy the APP directory that contains the Django app
-# Workdir is the working default directory , from where the comands will be runned 
+# Workdir is the working default directory , from where the comands will be runned
 # Expose the port from the container to our machine
 
-COPY ./requirements.txt /tmp/requirements.txt 
-COPY ./requirements.dev.txt /tmp/requirements.dev.txt 
+COPY ./requirements.txt /tmp/requirements.txt
+COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
 WORKDIR /app
 EXPOSE 8000
@@ -22,9 +22,9 @@ ARG DEV=false
 # This command will be runned on the alpine linux image
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    apk add --update --no-cache postgresql-client && \ 
+    apk add --update --no-cache postgresql-client jpeg-dev && \
     apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev && \
+        build-base postgresql-dev musl-dev zlib zlib-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
