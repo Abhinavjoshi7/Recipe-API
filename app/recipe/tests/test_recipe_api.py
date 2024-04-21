@@ -409,11 +409,11 @@ class PrivateRecipeApiTests(TestCase):
         """Test filtering recipes by ingredients"""
         r1 = create_recipe(user=self.user, title='Posh Beans on Tost')
         r2 = create_recipe(user=self.user, title='Chicken Cacciatore')
-        in1  = Ingredient.objects.create(user=self.user, name='Vegan')
+        in1 = Ingredient.objects.create(user=self.user, name='Vegan')
         in2 = Ingredient.objects.create(user=self.user, name='Chicken')
         r1.ingredients.add(in1)
         r2.ingredients.add(in2)
-        r3 = create_recipe(user=self.user, title = 'Red Lentil')
+        r3 = create_recipe(user=self.user, title='Red Lentil')
 
         params = {'ingredients': f'{in1.id}, {in2.id}'}
         res = self.client.get(RECIPES_URL, params)
@@ -424,6 +424,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertIn(s1.data, res.data)
         self.assertIn(s2.data, res.data)
         self.assertNotIn(s3.data, res.data)
+
 
 class ImageUploadTests(TestCase):
     """Tests for the image upload API"""
